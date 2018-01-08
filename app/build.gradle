@@ -29,10 +29,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile project(':network')
+//    compile project(':network')
     compile 'com.shuyu:gsyVideoPlayer-java:2.0.8'
     //根据你的需求
     compile 'com.shuyu:gsyVideoPlayer-armv5:2.0.8'
     compile 'com.shuyu:gsyVideoPlayer-armv7a:2.0.8'
     compile 'com.shuyu:gsyVideoPlayer-arm64:2.0.8'
+    compile 'com.github.viosonlee:networklibrary:1.0.0'
 }

@@ -99,8 +99,7 @@ public class PlayActivity extends AppCompatActivity {
                     break;
                 case KeyEvent.KEYCODE_DPAD_UP:
                     Log.i(getClass().getSimpleName(), "KEYCODE_DPAD_UP");
-//                    upSpeed();
-                    GSYVideoManager.instance().getMediaPlayer().seekTo(500000);
+                    upSpeed();
                     return true;
                 case KeyEvent.KEYCODE_DPAD_DOWN:
                     Log.i(getClass().getSimpleName(), "KEYCODE_DPAD_DOWN");
@@ -112,7 +111,7 @@ public class PlayActivity extends AppCompatActivity {
                     return true;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
                     Log.i(getClass().getSimpleName(), "KEYCODE_DPAD_RIGHT");
-                    seekToAword();
+                    seekToAward();
                     return true;
             }
         }
@@ -136,23 +135,23 @@ public class PlayActivity extends AppCompatActivity {
     long seekTime = 0;
     long currentPosition = 0;
 
-    private void seekToAword() {
+    private void seekToAward() {
         if (System.currentTimeMillis() - seekTime > 3000) {
             currentPosition = player.getCurrentPositionWhenPlaying();
         }
         seekTime = System.currentTimeMillis();
         Log.e("currentPosition", "" + currentPosition);
-        currentPosition += 60 * 1000;
+        currentPosition += 90 * 1000;
         GSYVideoManager.instance().getMediaPlayer().seekTo(currentPosition);
     }
-
+    
     private void seekToBack() {
         if (System.currentTimeMillis() - seekTime > 3000) {
             currentPosition = player.getCurrentPositionWhenPlaying();
         }
         seekTime = System.currentTimeMillis();
-        if (currentPosition > 60 * 1000) {
-            GSYVideoManager.instance().getMediaPlayer().seekTo(currentPosition - 60 * 1000);
+        if (currentPosition > 90 * 1000) {
+            GSYVideoManager.instance().getMediaPlayer().seekTo(currentPosition - 90 * 1000);
         } else {
             GSYVideoManager.instance().getMediaPlayer().seekTo(0);
         }
