@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import vioson.lee.phone.AppDataHandler;
 import vioson.lee.phone.R;
 import vioson.lee.phone.pojo.UrlTool;
 
@@ -33,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         editText_ip = findViewById(R.id.ip);
+        String ip1 = AppDataHandler.getIp(this);
+        if (!TextUtils.isEmpty(ip1))
+            editText_ip.setText(ip1);
         editText_data = findViewById(R.id.input);
         loading = findViewById(R.id.loading);
         OnRadioCheckListener checkListener = new OnRadioCheckListener();
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(ip)) {
             Toast.makeText(MainActivity.this, "please input Server IP", Toast.LENGTH_SHORT).show();
         }
+        AppDataHandler.saveIp(this, ip);
         loading.setVisibility(View.VISIBLE);
         Thread thread = new Thread() {
             @Override
@@ -70,22 +75,16 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         socket = new Socket(ip, 8000);
                         socketStatus = true;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.setVisibility(View.GONE);
-                                Toast.makeText(MainActivity.this, "连接成功!", Toast.LENGTH_SHORT).show();
-                            }
+                        runOnUiThread(() -> {
+                            loading.setVisibility(View.GONE);
+                            Toast.makeText(MainActivity.this, "连接成功!", Toast.LENGTH_SHORT).show();
                         });
                         outputStream = socket.getOutputStream();
                     } catch (final IOException e) {
                         e.printStackTrace();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.setVisibility(View.GONE);
-                                Toast.makeText(MainActivity.this, "连接失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                        runOnUiThread(() -> {
+                            loading.setVisibility(View.GONE);
+                            Toast.makeText(MainActivity.this, "连接失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
                     }
 
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             //在后面加上 '\0' ,是为了在服务端方便我们去解析；
             data = data + '\0';
         }
-        data = UrlTool.buildUrl(data, index);
+        data = UrlTool.buildUrl(data, 1);
         Log.i("realData", "" + data);
         loading.setVisibility(View.VISIBLE);
         Thread thread = new Thread() {
@@ -117,21 +116,15 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         outputStream.write(data.getBytes("UTF-8"));
                         outputStream.flush();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.setVisibility(View.GONE);
-                                Toast.makeText(MainActivity.this, "发送成功!", Toast.LENGTH_SHORT).show();
-                            }
+                        runOnUiThread(() -> {
+                            loading.setVisibility(View.GONE);
+                            Toast.makeText(MainActivity.this, "发送成功!", Toast.LENGTH_SHORT).show();
                         });
                     } catch (final IOException e) {
                         e.printStackTrace();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.setVisibility(View.GONE);
-                                Toast.makeText(MainActivity.this, "发送失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                        runOnUiThread(() -> {
+                            loading.setVisibility(View.GONE);
+                            Toast.makeText(MainActivity.this, "发送失败：" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
                     }
 
@@ -152,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 outputStream.close();
             }
             if (socket != null) {
+
                 socket.close();
             }
         } catch (IOException e) {

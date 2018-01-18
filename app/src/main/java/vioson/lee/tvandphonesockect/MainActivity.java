@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.ip);
         content = findViewById(R.id.content);
         receiveData();
-//        openUrl("http://disp.titan.mgtv.com/vod.do?fmt=4&pno=3001&fid=25DA111F997DC74C96145120D357BA9B&file=/c1/2017/06/13_0/25DA111F997DC74C96145120D357BA9B_20170613_1_1_947_mp4/52F424450EBAC097DF972C13244B2048.m3u8");//test
+//        H5Activity.launch(this, "https://v.qq.com");
     }
 
     public Handler handler = new MyHandler(this);
@@ -58,12 +58,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openUrl(String url) {
-//        Intent intent = new Intent();
-//        intent.setAction("android.intent.action.VIEW");
-//        Uri content_url = Uri.parse(url);
-//        intent.setData(content_url);
-//        startActivity(intent);
-        PlayActivity.launch(this, url);
+//        PlayActivity.launch(this, url);
+        TbsActivity.launch(this, url);
+//        if (TbsVideo.canUseTbsPlayer(this)) {
+//            TbsVideo.openVideo(this, url);
+//        }
     }
 
 
